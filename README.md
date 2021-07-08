@@ -1,2 +1,2 @@
-# simple-chat
+# Chatr
 A simple chat server backend.

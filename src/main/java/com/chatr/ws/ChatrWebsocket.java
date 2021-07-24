@@ -16,30 +16,35 @@ import java.util.Map;
 
 @Component
 public class ChatrWebsocket extends TextWebSocketHandler {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     final private ObjectMapper jackson = new ObjectMapper();
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         String payload = message.getPayload();
-        Map<String, Object> map = jackson.readValue(payload, new TypeReference<>() {});
-        session.sendMessage(new TextMessage("Hi " + map.get("user")));
+
+        try {
+            Map<String, Object> map = jackson.readValue(payload, new TypeReference<>() {});
+            session.sendMessage(new TextMessage("Hi " + map.get("user")));
+        } catch (Exception e) {
+            session.sendMessage(new TextMessage("Exception: " + e));
+        }
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        log.info("Opening connection for session: {}", session.getId());
+        logger.info("Opening connection for session: {}", session.getId());
         session.sendMessage(new TextMessage("hi"));
     }
 
     @Override
-    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-        log.warn("Encountered the following Transport Error for mup websocket {}, {}", session.getId(), exception.getMessage());
+    public void handleTransportError(WebSocketSession session, Throwable exception) {
+        logger.warn("Encountered the following Transport Error for mup websocket {}, {}", session.getId(), exception.getMessage());
     }
 
     @Override
-    public void afterConnectionClosed(@NotNull WebSocketSession session, @NotNull CloseStatus status) throws Exception {
+    public void afterConnectionClosed(@NotNull WebSocketSession session, @NotNull CloseStatus status) {
     }
 
 }

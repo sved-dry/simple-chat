@@ -11,7 +11,7 @@ public class AliveController {
 
     }
 
-    @GetMapping(value = "/hello")
+    @GetMapping(value = "/alive")
     ResponseEntity<String> get() {
         return ResponseEntity.ok("hi there");
     }

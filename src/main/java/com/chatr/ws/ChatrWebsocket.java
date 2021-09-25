@@ -21,7 +21,7 @@ public class ChatrWebsocket extends TextWebSocketHandler {
     final private ObjectMapper jackson = new ObjectMapper();
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
+    public void handleTextMessage(@NotNull WebSocketSession session, TextMessage message) throws IOException {
         String payload = message.getPayload();
 
         try {
